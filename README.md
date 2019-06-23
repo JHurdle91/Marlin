@@ -45,12 +45,12 @@ You need to know the following about your printer:
 * Steps/mm for XYZ axes and extruders (can tune later)
     * X: 80
     * Y: 80
-    * Z: 2560 steps/mm
-    * Extruder: 94.5 **?**
+    * Z: 394
+    * Extruder: 94.4962144
 * Endstop positions
-    * X: **?**
-    * Y: **?**
-    * Z: **?**
+    * X: 0
+    * Y: 0
+    * Z: 0
 * Thermistors and/or thermocouples
     * 100K ohm NTC Thermistor
 * Probes and probe settings
@@ -147,13 +147,49 @@ Disable for now. Come back to this section if there are issues.
 
 ### Prevent Lengthy Extrude
 
-Reduced `EXTRUDE_MAXLENGTH` to **50**. (Default was 200)
+Reduced `EXTRUDE_MAXLENGTH` to **75**. (Default was 200)
+
+## Endstops
+
+### Endstop Inverting
+
+    // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
+    #define X_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+    #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+    #define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+    #define X_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+    #define Y_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+    #define Z_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+    #define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
 
 ## Movement
 
-Leave default for now
+### Default Steps/mm
+
+    #define DEFAULT_AXIS_STEPS_PER_UNIT { 80, 80, 394, 94.4962144 }
+
+### Default Max Feed Rate
+
+    #define DEFAULT_MAX_FEEDRATE { 120, 120, 5, 25 }
+
+### Acceleration
+
+    #define DEFAULT_MAX_ACCELERATION { 1200, 1200, 50, 10000 }
+
+    #define DEFAULT_ACCELERATION          1200    // X, Y, Z and E acceleration for printing moves
+    #define DEFAULT_RETRACT_ACCELERATION  1600    // E acceleration for retracts
+    #define DEFAULT_TRAVEL_ACCELERATION   1200    // X, Y, Z acceleration for travel (non printing) moves
+
+### Jerk
+
+    #define DEFAULT_XJERK 2.0
+    #define DEFAULT_YJERK 0.4
+    #define DEFAULT_ZJERK  5.0
+
 
 ## Z Probe
+
+`#define FIX_MOUNTED_PROBE` for inductive probe.
 
     #define X_PROBE_OFFSET_FROM_EXTRUDER 10  // X offset: -left  +right  [of the nozzle]
     #define Y_PROBE_OFFSET_FROM_EXTRUDER 10  // Y offset: -front +behind [the nozzle]
@@ -161,7 +197,9 @@ Leave default for now
 
 The **Z offset** should be as exact as possible. Can be overridden with `M851 Z` or LCD controller. Save to EEPROM with `M500`.
 
-## Motor Direction
+## Stepper Drivers
+
+### Motor Direction
 
 If possible, set these before belt is attached, to prevent damage.
 
@@ -184,7 +222,9 @@ Starter values:
     #define INVERT_E4_DIR false
     #define INVERT_E5_DIR false
 
-## Movement Bounds
+## Homing and Bounds
+
+### Movement Bounds
 
 Set bed size and XYZ limits:
     
@@ -220,5 +260,5 @@ For now, I've gone with `AUTO_BED_LEVELING_BILINEAR`. Good for large or uneven b
 
 ## SD Card
 
-Enable `#define SDSUPPORT`
+Enable `#define SDSUPPORT` if you ever plan to print from an SD card.
 
