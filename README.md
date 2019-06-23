@@ -22,9 +22,9 @@ So far, I'm only concerned with `configuration.h`. For more detailed customizati
 
 ## Calibration
 
-### _**Placeholder**_
+### Extruder steps/mm
 
-*Will come back to this section with notes on whatever calibration is needed.*
+Calibrate using [this guide](https://mattshub.com/2017/04/19/extruder-calibration/).
 
 ## Prerequisites
 
@@ -46,7 +46,7 @@ You need to know the following about your printer:
     * X: 80
     * Y: 80
     * Z: 394
-    * Extruder: 94.4962144
+    * Extruder: 97.4
 * Endstop positions
     * X: 0
     * Y: 0
@@ -130,8 +130,6 @@ Come back to this section if temperature readings are drastically off.
 
 Enable `PID_AUTOTUBE_MENU` to add an autotune cycle option to the LCD menu.
 
-Added PID values for the **Hictop i3** from some [random old forum post](https://reprap.org/forum/read.php?406,656276).
-
 ```C++
 // HICTOP i3
 #define  DEFAULT_Kp 11.95
@@ -141,26 +139,40 @@ Added PID values for the **Hictop i3** from some [random old forum post](https:/
 
 #### Bed PID
 
-Disable for now. Come back to this section if there are issues.
+Skip for now. Come back to this section if there are issues.
+
+#### Tuning
+
+Tune extruder 0 with target temp of 210. Do 10 cycles.
+
+    M303 E0 S210 C10
+
+Plug the final PID values back into `configuration.h`, or set using the gcode command:
+
+    M301 P17.99 I1.14 D70.74
+
+Ignore the *extrusion multiplier* section of the guide for now.
 
 ## Safety
 
 ### Prevent Lengthy Extrude
 
-Reduced `EXTRUDE_MAXLENGTH` to **75**. (Default was 200)
+Reduced `EXTRUDE_MAXLENGTH` to **150**. (Default was 200)
 
 ## Endstops
 
 ### Endstop Inverting
 
-    // Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
-    #define X_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-    #define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-    #define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-    #define X_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-    #define Y_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-    #define Z_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
-    #define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
+```C++
+// Mechanical endstop with COM to ground and NC to Signal uses "false" here (most common setup).
+#define X_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+#define Y_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+#define Z_MIN_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+#define X_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+#define Y_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+#define Z_MAX_ENDSTOP_INVERTING true // Set to true to invert the logic of the endstop.
+#define Z_MIN_PROBE_ENDSTOP_INVERTING true // Set to true to invert the logic of the probe.
+```
 
 ## Movement
 
@@ -191,8 +203,8 @@ Reduced `EXTRUDE_MAXLENGTH` to **75**. (Default was 200)
 
 `#define FIX_MOUNTED_PROBE` for inductive probe.
 
-    #define X_PROBE_OFFSET_FROM_EXTRUDER 10  // X offset: -left  +right  [of the nozzle]
-    #define Y_PROBE_OFFSET_FROM_EXTRUDER 10  // Y offset: -front +behind [the nozzle]
+    #define X_PROBE_OFFSET_FROM_EXTRUDER 9  // X offset: -left  +right  [of the nozzle]
+    #define Y_PROBE_OFFSET_FROM_EXTRUDER 57  // Y offset: -front +behind [the nozzle]
     #define Z_PROBE_OFFSET_FROM_EXTRUDER 0   // Z offset: -below +above  [the nozzle]
 
 The **Z offset** should be as exact as possible. Can be overridden with `M851 Z` or LCD controller. Save to EEPROM with `M500`.
