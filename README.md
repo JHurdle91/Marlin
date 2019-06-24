@@ -128,7 +128,7 @@ Come back to this section if temperature readings are drastically off.
 
 #### Hotend PID
 
-Enable `PID_AUTOTUBE_MENU` to add an autotune cycle option to the LCD menu.
+Enable `PID_AUTOTUNE_MENU` to add an autotune cycle option to the LCD menu.
 
 ```C++
 // HICTOP i3
